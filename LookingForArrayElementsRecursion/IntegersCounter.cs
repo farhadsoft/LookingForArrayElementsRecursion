@@ -12,8 +12,17 @@ namespace LookingForArrayElementsRecursion
         /// <returns>The number of occurrences of the elements that are in <paramref name="elementsToSearchFor"/> <see cref="Array"/>.</returns>
         public static int GetIntegersCount(int[] arrayToSearch, int[] elementsToSearchFor)
         {
-            // TODO #1. Implement the method using recursion.
-            throw new NotImplementedException();
+            if (arrayToSearch is null)
+            {
+                throw new ArgumentNullException(nameof(arrayToSearch));
+            }
+
+            if (elementsToSearchFor is null)
+            {
+                throw new ArgumentNullException(nameof(elementsToSearchFor));
+            }
+
+            return GetResult(arrayToSearch, elementsToSearchFor);
         }
 
         /// <summary>
@@ -26,8 +35,81 @@ namespace LookingForArrayElementsRecursion
         /// <returns>The number of occurrences of the elements that are in <paramref name="elementsToSearchFor"/> <see cref="Array"/>.</returns>
         public static int GetIntegersCount(int[] arrayToSearch, int[] elementsToSearchFor, int startIndex, int count)
         {
-            // TODO #2. Implement the method using recursion.
-            throw new NotImplementedException();
+            if (arrayToSearch is null)
+            {
+                throw new ArgumentNullException(nameof(arrayToSearch));
+            }
+
+            if (elementsToSearchFor is null)
+            {
+                throw new ArgumentNullException(nameof(elementsToSearchFor));
+            }
+
+            if (startIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+            }
+
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            if (startIndex >= arrayToSearch.Length)
+            {
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+            }
+
+            return GetResult(arrayToSearch, elementsToSearchFor, startIndex, count);
+        }
+
+        public static int GetResult(
+                                    int[] arrayToSearch,
+                                    int[] elementsToSearchFor,
+                                    int startIndex = 0,
+                                    int count = int.MaxValue,
+                                    int index = 0,
+                                    int result = 0)
+        {
+            if (elementsToSearchFor is null)
+            {
+                throw new ArgumentNullException(nameof(elementsToSearchFor));
+            }
+
+            if (index < elementsToSearchFor.Length)
+            {
+                result += SearchInArray(arrayToSearch, elementsToSearchFor[index], startIndex, count + startIndex);
+                index++;
+                return GetResult(arrayToSearch, elementsToSearchFor, startIndex, count, index, result);
+            }
+
+            return result;
+        }
+
+        public static int SearchInArray(
+                                        int[] arrayToSearch,
+                                        int element,
+                                        int startIndex = 0,
+                                        int endIndex = int.MaxValue,
+                                        int i = 0)
+        {
+            if (arrayToSearch is null)
+            {
+                throw new ArgumentNullException(nameof(arrayToSearch));
+            }
+
+            if (startIndex < arrayToSearch.Length && endIndex > startIndex)
+            {
+                if (arrayToSearch[startIndex] == element)
+                {
+                    i++;
+                }
+
+                startIndex++;
+                return SearchInArray(arrayToSearch, element, startIndex, endIndex, i);
+            }
+
+            return i;
         }
     }
 }
